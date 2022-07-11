@@ -1,7 +1,10 @@
+import Landing from "./pages/Landing";
+import Register from "./pages/Register";
+
 function App() {
   return (
-    <div className="App">
-      <h1>Tamo en vivo</h1>
+    <div>
+      <Landing />
     </div>
   );
 }
