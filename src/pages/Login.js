@@ -2,7 +2,6 @@ import {
   Card,
   Stack,
   TextInput,
-  NativeSelect,
   PasswordInput,
   Button,
   Anchor,
