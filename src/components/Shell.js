@@ -1,14 +1,4 @@
-import React, { useState } from "react";
-import {
-  AppShell,
-  Navbar,
-  Text,
-  MediaQuery,
-  Burger,
-  useMantineTheme,
-  ActionIcon,
-  Avatar,
-} from "@mantine/core";
+import { AppShell, Navbar, ActionIcon, Avatar } from "@mantine/core";
 import logoResponsive from "./../assets/svg/logo-responsive.svg";
 import { Home, Search, Star, Logout } from "tabler-icons-react";
 
