@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Feed from "./pages/Feed";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
+import User from "./pages/User";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/feed" element={<Feed />} />
         <Route path="/search" element={<Search />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/user" element={<User />} />
       </Routes>
     </BrowserRouter>
   );
