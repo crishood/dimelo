@@ -1,0 +1,31 @@
+.entry-container{
+    width: 478px;
+}
+
+.entry-header{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+    h2{
+        margin: 2px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        color: #901CD7;
+    }
+}
+
+.entry-body{
+    display: flex;
+}
+
+.entry-text-sound{
+    width: 100%;
+    padding: 12px;
+    
+    p{
+        font-style: italic;
+        font-size: 16px;
+    }
+}
