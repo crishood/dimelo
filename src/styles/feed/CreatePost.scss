@@ -1,0 +1,15 @@
+.create-post-container{
+    width: 478px;
+}
+
+.create-post-form{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.create-post-media{
+    display: flex;
+    justify-content: right;
+    gap: 12px;
+}
