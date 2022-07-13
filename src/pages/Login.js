@@ -6,6 +6,7 @@ import {
   Button,
   Anchor,
 } from "@mantine/core";
+import { Link, useNavigate } from "react-router-dom";
 import logoColor from "./../assets/svg/logo-color.svg";
 const Login = () => {
   return (
@@ -31,7 +32,9 @@ const Login = () => {
 
               <Button>Continuar</Button>
             </form>
-            <Anchor>¿No tienes cuenta? Regístrate</Anchor>
+            <Anchor component={Link} to="/register">
+              ¿No tienes cuenta? Regístrate
+            </Anchor>
           </Stack>
         </Card>
       </div>
