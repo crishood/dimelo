@@ -8,10 +8,15 @@ import {
   Button,
   Anchor,
 } from "@mantine/core";
-import { CurrentLocation } from "tabler-icons-react";
+import { CurrentLocation, X } from "tabler-icons-react";
 import { useForm } from "@mantine/form";
 import logoColor from "./../assets/svg/logo-color.svg";
 import { Link, useNavigate } from "react-router-dom";
+import ls from "localstorage-slim";
+import encUTF8 from "crypto-js/enc-utf8";
+import AES from "crypto-js/aes";
+import axios from "axios";
+import { showNotification } from "@mantine/notifications";
 const apiKey = process.env.REACT_APP_CH_GM_API_KEY;
 const mapApiJs = "https://maps.googleapis.com/maps/api/js";
 const geocodeJson = "https://maps.googleapis.com/maps/api/geocode/json";
@@ -122,7 +127,6 @@ const Register = () => {
   // load map script after mounted
   useEffect(() => {
     initMapScript().then(() => initAutocomplete());
-    console.log(apiKey);
   }, []);
 
   const form = useForm({
@@ -150,6 +154,57 @@ const Register = () => {
     },
   });
 
+  const nav = useNavigate();
+  ls.config.encrypt = true;
+  ls.config.secret = "secret-string";
+
+  ls.config.encrypter = (data, secret) =>
+    AES.encrypt(JSON.stringify(data), secret).toString();
+
+  ls.config.decrypter = (data, secret) => {
+    try {
+      return JSON.parse(AES.decrypt(data, secret).toString(encUTF8));
+    } catch (e) {
+      return data;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    const { artistName, email, role, location, password } = form.values;
+    console.log(form.values);
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_URL_BACK}/users/register`,
+        {
+          artistName: artistName,
+          email: email,
+          role: role,
+          location: location,
+          password: password,
+        }
+      );
+      localStorage.setItem("token", res.data.data.token);
+      ls.set("m4g1c14n", res.data.data.name);
+      ls.set("b0x", res.data.data.email);
+      ls.set("p41nt1ng", res.data.data.picture);
+      ls.set("r0l3", res.data.data.role);
+      ls.set("h0us3", res.data.data.location);
+      const token = await localStorage.getItem("token");
+      if (token) {
+        nav("/feed");
+      }
+    } catch (e) {
+      showNotification({
+        disallowClose: true,
+        title: "¡Oye!",
+        message: "Ya hay un usuario registrado con ese correo",
+        color: "red",
+        icon: <X />,
+        loading: false,
+      });
+    }
+  };
+
   return (
     <div className="form-page">
       <div className="form-container">
@@ -161,19 +216,27 @@ const Register = () => {
               width="110"
               className="logo-color"
             />
-            <form className="form-wrapper">
+            <form
+              className="form-wrapper"
+              onSubmit={form.onSubmit(handleSubmit)}
+            >
               <TextInput
                 placeholder="Tu nombre"
                 label="Nombre artístico"
                 {...form.getInputProps("artistName")}
                 required
               />
-              <TextInput placeholder="Tu correo" label="Email" required />
+              <TextInput
+                placeholder="Tu correo"
+                label="Email"
+                required
+                {...form.getInputProps("email")}
+              />
               <NativeSelect
                 data={["Beatmaker", "Compositor"]}
-                placeholder="Rol"
-                label="Escoge tu rol principal"
+                label="Escoge tu rol en la industria"
                 required
+                {...form.getInputProps("role")}
               />
               <TextInput
                 label="¿Dónde vives?"
@@ -181,6 +244,7 @@ const Register = () => {
                 icon={<CurrentLocation />}
                 ref={searchInput}
                 required
+                // {...form.getInputProps("location")}
               />
 
               <PasswordInput
@@ -196,7 +260,7 @@ const Register = () => {
                 {...form.getInputProps("confirmPassword")}
                 required
               />
-              <Button>Continuar</Button>
+              <Button type="submit">Continuar</Button>
             </form>
             <Anchor component={Link} to="/login">
               ¿Ya tienes cuenta? Inicia sesión
