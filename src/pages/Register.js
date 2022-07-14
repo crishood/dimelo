@@ -7,6 +7,7 @@ import {
   PasswordInput,
   Button,
   Anchor,
+  Input,
 } from "@mantine/core";
 import { CurrentLocation, X } from "tabler-icons-react";
 import { useForm } from "@mantine/form";
@@ -135,6 +136,7 @@ const Register = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      role: "Beatmaker",
     },
     validate: {
       artistName: (value) =>
@@ -170,8 +172,8 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    const { artistName, email, role, location, password } = form.values;
-    console.log(form.values);
+    const { artistName, email, role, password } = form.values;
+
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_URL_BACK}/users/register`,
@@ -179,7 +181,7 @@ const Register = () => {
           artistName: artistName,
           email: email,
           role: role,
-          location: location,
+          location: `${address.city}, ${address.country}`,
           password: password,
         }
       );
@@ -191,7 +193,7 @@ const Register = () => {
       ls.set("h0us3", res.data.data.location);
       const token = await localStorage.getItem("token");
       if (token) {
-        nav("/feed");
+        nav("/profile");
       }
     } catch (e) {
       showNotification({
@@ -210,12 +212,14 @@ const Register = () => {
       <div className="form-container">
         <Card shadow="lg">
           <Stack spacing="md">
-            <img
-              src={logoColor}
-              alt="Dímelo"
-              width="110"
-              className="logo-color"
-            />
+            <Link to="/">
+              <img
+                src={logoColor}
+                alt="Dímelo"
+                width="110"
+                className="logo-color"
+              />
+            </Link>
             <form
               className="form-wrapper"
               onSubmit={form.onSubmit(handleSubmit)}
@@ -238,7 +242,7 @@ const Register = () => {
                 required
                 {...form.getInputProps("role")}
               />
-              <TextInput
+              <Input
                 label="¿Dónde vives?"
                 placeholder="Ubicación"
                 icon={<CurrentLocation />}

@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { Link } from "react-router-dom";
 import videoBackground from "../assets/video/video-bg.mp4";
 import logoWhite from "../assets/svg/logo-white.svg";
 
@@ -15,8 +16,12 @@ const Landing = () => {
             Conecta con beatmakers y compositores de tu ciudad
           </h1>
           <div className="landing-buttons">
-            <Button>Regístrate</Button>
-            <Button variant="light">Iniciar sesión</Button>
+            <Button component={Link} to="/register">
+              Regístrate
+            </Button>
+            <Button variant="light" component={Link} to="/login">
+              Iniciar sesión
+            </Button>
           </div>
         </div>
       </div>
