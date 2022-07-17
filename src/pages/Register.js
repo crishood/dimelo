@@ -75,6 +75,19 @@ const Register = () => {
   const searchInput = useRef(null);
   const [address, setAddress] = useState({});
 
+  ls.config.encrypt = true;
+  ls.config.secret = "secret-string";
+
+  ls.config.encrypter = (data, secret) =>
+    AES.encrypt(JSON.stringify(data), secret).toString();
+
+  ls.config.decrypter = (data, secret) => {
+    try {
+      return JSON.parse(AES.decrypt(data, secret).toString(encUTF8));
+    } catch (e) {
+      return data;
+    }
+  };
   // init gmap script
   const initMapScript = () => {
     // if script already loaded
@@ -157,19 +170,6 @@ const Register = () => {
   });
 
   const nav = useNavigate();
-  ls.config.encrypt = true;
-  ls.config.secret = "secret-string";
-
-  ls.config.encrypter = (data, secret) =>
-    AES.encrypt(JSON.stringify(data), secret).toString();
-
-  ls.config.decrypter = (data, secret) => {
-    try {
-      return JSON.parse(AES.decrypt(data, secret).toString(encUTF8));
-    } catch (e) {
-      return data;
-    }
-  };
 
   const handleSubmit = async (e) => {
     const { artistName, email, role, password } = form.values;
@@ -183,14 +183,18 @@ const Register = () => {
           role: role,
           location: `${address.city}, ${address.country}`,
           password: password,
+          bio: "Cuéntanos un poco sobre ti...",
+          links: ["", "", "", ""],
         }
       );
       localStorage.setItem("token", res.data.data.token);
-      ls.set("m4g1c14n", res.data.data.name);
-      ls.set("b0x", res.data.data.email);
-      ls.set("p41nt1ng", res.data.data.picture);
-      ls.set("r0l3", res.data.data.role);
-      ls.set("h0us3", res.data.data.location);
+      ls.set("name", res.data.data.artistName);
+      ls.set("email", res.data.data.email);
+      ls.set("picture", res.data.data.picture);
+      ls.set("role", res.data.data.role);
+      ls.set("location", res.data.data.location);
+      ls.set("bio", res.data.data.bio);
+      ls.set("links", JSON.stringify(res.data.data.links));
       const token = await localStorage.getItem("token");
       if (token) {
         nav("/profile");
@@ -248,7 +252,6 @@ const Register = () => {
                 icon={<CurrentLocation />}
                 ref={searchInput}
                 required
-                // {...form.getInputProps("location")}
               />
 
               <PasswordInput

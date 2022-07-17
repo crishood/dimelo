@@ -31,6 +31,13 @@
     gap: 6px;
 }
 
+.profile-edit-picture{
+    img{
+        width: 100%;
+        opacity: 0.5;
+    }
+}
+
 .profile-followers{
     display: flex;
     gap: 12px;
@@ -45,3 +52,8 @@
 .change-picture{
     font-size: 12px;
 }
+
+.profile-socialmedia{
+    display: flex;
+}
+
