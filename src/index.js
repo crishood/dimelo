@@ -5,8 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.scss";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
-import { store } from "./store";
-import { Provider } from "react-redux";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -33,8 +32,6 @@ root.render(
       withNormalizeCSS
     >
       <NotificationsProvider>
-        {/* <Provider store={store}>
-      </Provider> */}
         <App />
       </NotificationsProvider>
     </MantineProvider>
