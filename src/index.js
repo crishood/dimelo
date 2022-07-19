@@ -5,8 +5,24 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.scss";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
+import { Provider } from "react-redux";
+import {
+  applyMiddleware,
+  compose,
+  legacy_createStore as createStore,
+} from "redux";
+import { logger } from "./middlewares";
+import rootReducer from "./reducers/rootReducer";
+import thunk from "redux-thunk";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+const composeAlt = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const composedEnhancers = composeAlt(applyMiddleware(logger, thunk));
+
+const store = createStore(rootReducer, composedEnhancers);
+
 root.render(
   <React.StrictMode>
     <MantineProvider
@@ -32,7 +48,9 @@ root.render(
       withNormalizeCSS
     >
       <NotificationsProvider>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </NotificationsProvider>
     </MantineProvider>
   </React.StrictMode>

@@ -16,14 +16,13 @@ import {
   BrandSoundcloud,
   BrandYoutube,
 } from "tabler-icons-react";
-import { Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import ls from "localstorage-slim";
 import encUTF8 from "crypto-js/enc-utf8";
 import AES from "crypto-js/aes";
 import { useState } from "react";
 import axios from "axios";
-import { showNotification } from "@mantine/notifications";
+import ProfileEntries from "../components/ProfileEntries";
 
 const Profile = () => {
   const [address, setAddress] = useState({});
@@ -208,6 +207,7 @@ const Profile = () => {
               </Card>
             </div>
             <CreatePost />
+            <ProfileEntries />
           </>
         ) : (
           <div className="profile-container">
