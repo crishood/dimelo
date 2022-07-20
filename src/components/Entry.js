@@ -1,6 +1,6 @@
-import { Card, Avatar } from "@mantine/core";
+import { Card, Avatar, ActionIcon } from "@mantine/core";
 import { Link } from "react-router-dom";
-import lorena from "../assets/img/lorena.png";
+import { DotsVertical } from "tabler-icons-react";
 import ReactPlayer from "react-player";
 import moment from "moment";
 import "moment/locale/es";
@@ -20,13 +20,18 @@ const Entry = ({ name, role, avatar, description, picture, audio, date }) => {
             </h2>
             <p className="date">{formatDate}</p>
           </Link>
+          <ActionIcon>
+            <DotsVertical />
+          </ActionIcon>
         </div>
         <div className="entry-body">
-          {picture && <img src={lorena} />}
+          <div className="media">
+            {picture && <img src={picture} />}
+            {audio && <ReactPlayer url={audio} width="100%" height="70px" />}
+          </div>
 
           <div className="entry-text-sound">
             <p>{description} </p>
-            {audio && <ReactPlayer url={audio} width="100%" height="70px" />}
           </div>
         </div>
       </Card>

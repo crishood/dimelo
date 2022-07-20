@@ -17,12 +17,24 @@
         line-height: 22px;
         color: #901CD7;
     }
+    button{
+        margin-left: auto;
+    }
 }
 
 .entry-body{
     display: flex;
+    flex-direction: column;
+    
 }
 
+.media{
+    
+    width: 100%;
+    img{
+        width: 100%;
+    }
+}
 .entry-text-sound{
     width: 100%;
     padding: 12px;

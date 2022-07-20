@@ -29,6 +29,17 @@ export const fetchEntries = createAsyncThunk(
   }
 );
 
+export const postNewEntry = createAsyncThunk(
+  "data/postEntry",
+  async ({ description, picture, audio }, { dispatch }) => {
+    dispatch(setLoading(true));
+    console.log({ description, picture, audio });
+    const newEntry = await postEntry({ description, picture, audio });
+    dispatch(fetchEntries());
+    dispatch(setLoading(false));
+  }
+);
+
 export const userEntriesSlice = createSlice({
   name: "userEntries",
   initialState,
@@ -39,6 +50,6 @@ export const userEntriesSlice = createSlice({
   },
 });
 
-export const { setEntries } = userEntriesSlice.actions;
+export const { setEntries, addEntry } = userEntriesSlice.actions;
 
 export default userEntriesSlice.reducer;

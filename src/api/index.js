@@ -11,21 +11,22 @@ export const getEntries = () => {
     .catch((err) => console.log(err));
 };
 
-export const postEntry = (description) => {
+export const postEntry = ({ description, picture, audio }) => {
   return axios
     .post(
       `${process.env.REACT_APP_URL_BACK}/entries`,
       {
         description: description,
-        picture: "",
-        audio: "",
+        picture: picture,
+        audio: audio,
       },
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
         },
       }
     )
-    .then((res) => console.log(res))
+    .then((res) => res.data.data)
     .catch((err) => console.log(err));
 };
