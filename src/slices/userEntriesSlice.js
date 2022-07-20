@@ -1,23 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getEntries, postEntry } from "../api";
+import { getEntries, postEntry, deleteEntry } from "../api";
 import { setLoading } from "./uiSlice";
 
 const initialState = {
   entries: [],
 };
-
-// export const fetchPokemonsWithDetails = createAsyncThunk(
-//   'data/fetchPokemonsWithDetails',
-//   async (_, { dispatch }) => {
-//     dispatch(setLoading(true));
-//     const pokemonsRes = await getPokemon();
-//     const pokemonsDetailed = await Promise.all(
-//       pokemonsRes.map((pokemon) => getPokemonDetails(pokemon))
-//     );
-//     dispatch(setPokemons(pokemonsDetailed));
-//     dispatch(setLoading(false));
-//   }
-// );
 
 export const fetchEntries = createAsyncThunk(
   "data/fetchEntries",
@@ -30,12 +17,21 @@ export const fetchEntries = createAsyncThunk(
 );
 
 export const postNewEntry = createAsyncThunk(
-  "data/postEntry",
+  "data/postNewEntry",
   async ({ description, picture, audio }, { dispatch }) => {
     dispatch(setLoading(true));
-    console.log({ description, picture, audio });
     const newEntry = await postEntry({ description, picture, audio });
     dispatch(fetchEntries());
+    dispatch(setLoading(false));
+  }
+);
+
+export const deleteAnEntry = createAsyncThunk(
+  "data/deleteAnEntry",
+  async (id, { dispatch }) => {
+    dispatch(setLoading(true));
+    const entry = await deleteEntry(id);
+    dispatch(destroyEntry(entry));
     dispatch(setLoading(false));
   }
 );
@@ -47,9 +43,13 @@ export const userEntriesSlice = createSlice({
     setEntries: (state, action) => {
       state.entries = action.payload;
     },
+    destroyEntry: (state, action) => {
+      const { _id } = action.payload;
+      state.entries = state.entries.filter((item) => item._id !== _id);
+    },
   },
 });
 
-export const { setEntries, addEntry } = userEntriesSlice.actions;
+export const { setEntries, destroyEntry } = userEntriesSlice.actions;
 
 export default userEntriesSlice.reducer;

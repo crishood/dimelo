@@ -66,6 +66,7 @@ const Login = () => {
       ls.set("location", res.data.data.location);
       ls.set("bio", res.data.data.bio);
       ls.set("links", JSON.stringify(res.data.data.links));
+
       const token = await localStorage.getItem("token");
       if (token) {
         nav("/feed");

@@ -24,6 +24,7 @@ const ProfileEntries = () => {
             return (
               <Entry
                 key={entry._id}
+                id={entry._id}
                 name={entry.user[0].artistName}
                 role={entry.user[0].role}
                 avatar={entry.user[0].picture}

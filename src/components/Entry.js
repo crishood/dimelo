@@ -1,14 +1,30 @@
-import { Card, Avatar, ActionIcon } from "@mantine/core";
+import { Card, Avatar, ActionIcon, Popover } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { DotsVertical } from "tabler-icons-react";
+import { DotsVertical, Trash } from "tabler-icons-react";
+import { useState } from "react";
 import ReactPlayer from "react-player";
 import moment from "moment";
 import "moment/locale/es";
+import { deleteAnEntry } from "../slices/userEntriesSlice";
+import { useDispatch } from "react-redux";
 
-const Entry = ({ name, role, avatar, description, picture, audio, date }) => {
+const Entry = ({
+  name,
+  role,
+  avatar,
+  description,
+  picture,
+  audio,
+  date,
+  id,
+}) => {
+  const dispatch = useDispatch();
   moment.locale("es");
   const formatDate = moment(date).locale("es").format("LLLL");
-
+  const [opened, setOpened] = useState(false);
+  const handleDelete = () => {
+    dispatch(deleteAnEntry(id));
+  };
   return (
     <div className="entry-container">
       <Card>
@@ -20,9 +36,20 @@ const Entry = ({ name, role, avatar, description, picture, audio, date }) => {
             </h2>
             <p className="date">{formatDate}</p>
           </Link>
-          <ActionIcon>
-            <DotsVertical />
-          </ActionIcon>
+          <Popover
+            opened={opened}
+            onClose={() => setOpened(false)}
+            target={
+              <ActionIcon onClick={() => setOpened((o) => !o)}>
+                <DotsVertical />
+              </ActionIcon>
+            }
+            position="right"
+          >
+            <ActionIcon color="red" onClick={() => handleDelete()}>
+              <Trash />
+            </ActionIcon>
+          </Popover>
         </div>
         <div className="entry-body">
           <div className="media">

@@ -30,3 +30,17 @@ export const postEntry = ({ description, picture, audio }) => {
     .then((res) => res.data.data)
     .catch((err) => console.log(err));
 };
+
+export const deleteEntry = (id) => {
+  return axios
+    .delete(`${process.env.REACT_APP_URL_BACK}/entries/${id}`)
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+};
+
+export const searchUsers = (role, location) => {
+  return axios
+    .get(`${process.env.REACT_APP_URL_BACK}/users/${role}/${location}`)
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+};
