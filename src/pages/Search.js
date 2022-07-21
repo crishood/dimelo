@@ -1,15 +1,15 @@
 import Shell from "../components/Shell";
 import { Card, Button, NativeSelect, TextInput, Loader } from "@mantine/core";
-import { useDispatch, useSelector } from "react-redux/es/exports";
-import { useForm } from "@mantine/form";
-import { searchUsers } from "../api";
-import { useState } from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux/es/exports";
+import { fetchUsers } from "../slices/usersSlice";
 import { setLoading } from "../slices/uiSlice";
+import { useForm } from "@mantine/form";
+import { useEffect, useState } from "react";
 import ArtistFound from "../components/ArtistFound";
 
 const Search = () => {
-  const [results, setResults] = useState([]);
-
+  const users = useSelector((state) => state.users.users, shallowEqual);
+  const loading = useSelector((state) => state.ui.loading);
   const form = useForm({
     initialValues: {
       role: "",
@@ -17,16 +17,16 @@ const Search = () => {
     },
   });
 
-  const loading = useSelector((state) => state.ui.loading);
   const dispatch = useDispatch();
-  const handleSubmit = async () => {
-    dispatch(setLoading(true));
-    const { role, location } = form.values;
-    const response = await searchUsers(role, location);
-    setResults(response);
+  useEffect(() => {
     dispatch(setLoading(false));
+  }, []);
+
+  const handleSubmit = async () => {
+    const { role, location } = form.values;
+    dispatch(fetchUsers({ role, location }));
   };
-  console.log(results);
+
   return (
     <Shell>
       <div className="feed">
@@ -55,12 +55,15 @@ const Search = () => {
             </form>
           </Card>
         </div>
-        {loading ? (
+        {users.length === 0 ? (
+          <p>Busca artistas en tu ciudad...</p>
+        ) : loading ? (
           <Loader />
         ) : (
-          results.map((item) => {
+          users.map((item) => {
             return (
               <ArtistFound
+                key={item._id}
                 name={item.artistName}
                 picture={item.picture}
                 role={item.role}

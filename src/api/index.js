@@ -38,9 +38,16 @@ export const deleteEntry = (id) => {
     .catch((err) => console.log(err));
 };
 
-export const searchUsers = (role, location) => {
+export const searchUsers = ({ role, location }) => {
   return axios
     .get(`${process.env.REACT_APP_URL_BACK}/users/${role}/${location}`)
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+};
+
+export const getUser = (artist) => {
+  return axios
+    .get(`${process.env.REACT_APP_URL_BACK}/users/${artist}`)
     .then((res) => res.data.data)
     .catch((err) => console.log(err));
 };

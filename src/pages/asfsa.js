@@ -21,16 +21,8 @@ const User = () => {
   const [user, setUser] = useState(
     users.filter((item) => item.artistName === artistName)[0]
   );
-
-  const fetchData = async () => {
-    const response = await getUser(artistName);
-    setUser(response);
-    dispatch(setLoading(false));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const fetchData = () => {};
+  useEffect(() => {}, []);
   return (
     <Shell>
       <div className="feed">
@@ -42,7 +34,7 @@ const User = () => {
               </Button>
             </div>
 
-            {loading && users.length === 0 ? (
+            {loading ? (
               <Loader />
             ) : (
               <div className="profile-info">

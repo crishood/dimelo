@@ -24,36 +24,34 @@ const composedEnhancers = composeAlt(applyMiddleware(logger, thunk));
 const store = createStore(rootReducer, composedEnhancers);
 
 root.render(
-  <React.StrictMode>
-    <MantineProvider
-      theme={{
-        fontFamily: "Open Sans",
-        black: "#313F42",
-        colors: {
-          blue: [
-            "#f9e6ff",
-            "#e2bafa",
-            "#cc8df2",
-            "#b661eb",
-            "#a134e5",
-            "#881acb",
-            "#6a149f",
-            "#4c0d73",
-            "#2e0747",
-            "#12011d",
-          ],
-        },
-      }}
-      withGlobalStyles
-      withNormalizeCSS
-    >
-      <NotificationsProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </NotificationsProvider>
-    </MantineProvider>
-  </React.StrictMode>
+  <MantineProvider
+    theme={{
+      fontFamily: "Open Sans",
+      black: "#313F42",
+      colors: {
+        blue: [
+          "#f9e6ff",
+          "#e2bafa",
+          "#cc8df2",
+          "#b661eb",
+          "#a134e5",
+          "#881acb",
+          "#6a149f",
+          "#4c0d73",
+          "#2e0747",
+          "#12011d",
+        ],
+      },
+    }}
+    withGlobalStyles
+    withNormalizeCSS
+  >
+    <NotificationsProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </NotificationsProvider>
+  </MantineProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

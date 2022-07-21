@@ -46,7 +46,7 @@ function App() {
           element={<PrivateRoute children={<Profile />}></PrivateRoute>}
         />
         <Route
-          path="/user/:username"
+          path="/user/:artistName"
           element={<PrivateRoute children={<User />}></PrivateRoute>}
         />
       </Routes>

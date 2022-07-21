@@ -25,7 +25,6 @@ import axios from "axios";
 import ProfileEntries from "../components/ProfileEntries";
 
 const Profile = () => {
-  const [address, setAddress] = useState({});
   const [edit, setEdit] = useState(false);
 
   ls.config.encrypt = true;
