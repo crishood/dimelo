@@ -7,38 +7,38 @@ import {
   BrandYoutube,
   BrandSoundcloud,
 } from "tabler-icons-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUser } from "../api";
-import { setLoading } from "../slices/uiSlice";
 import { useDispatch, useSelector, shallowEqual } from "react-redux/es/exports";
 
 const User = () => {
-  const dispatch = useDispatch();
   const loading = useSelector((state) => state.ui.loading);
   const { artistName } = useParams();
   const users = useSelector((state) => state.users.users, shallowEqual);
   const [user, setUser] = useState(
     users.filter((item) => item.artistName === artistName)[0]
   );
-
-  const fetchData = async () => {
-    const response = await getUser(artistName);
-    setUser(response);
-    dispatch(setLoading(false));
+  const [follow, setFollow] = useState(false);
+  const handleFollow = () => {
+    if (!follow) {
+      user.followers.length++;
+    } else {
+      user.followers.length--;
+    }
+    setFollow((f) => !f);
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
   return (
     <Shell>
       <div className="feed">
         <div className="profile-container">
           <Card>
             <div className="profile-edit">
-              <Button size="xs" color="blue">
-                Seguir
+              <Button
+                size="xs"
+                color={!follow ? "blue" : "red"}
+                onClick={() => handleFollow()}
+              >
+                {!follow ? "Seguir" : "Dejar de seguir"}
               </Button>
             </div>
 

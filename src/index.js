@@ -14,6 +14,14 @@ import {
 import { logger } from "./middlewares";
 import rootReducer from "./reducers/rootReducer";
 import thunk from "redux-thunk";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { PersistGate } from "redux-persist/integration/react";
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -21,7 +29,11 @@ const composeAlt = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const composedEnhancers = composeAlt(applyMiddleware(logger, thunk));
 
-const store = createStore(rootReducer, composedEnhancers);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = createStore(persistedReducer, composedEnhancers);
+
+let persistor = persistStore(store);
 
 root.render(
   <MantineProvider
@@ -48,7 +60,9 @@ root.render(
   >
     <NotificationsProvider>
       <Provider store={store}>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
     </NotificationsProvider>
   </MantineProvider>

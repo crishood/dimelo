@@ -117,27 +117,6 @@ const Register = () => {
     );
   };
 
-  const reverseGeocode = ({ latitude: lat, longitude: lng }) => {
-    const url = `${geocodeJson}?key=${apiKey}&latlng=${lat},${lng}`;
-    searchInput.current.value = "Getting your location...";
-    fetch(url)
-      .then((response) => response.json())
-      .then((location) => {
-        const place = location.results[0];
-        const _address = extractAddress(place);
-        setAddress(_address);
-        searchInput.current.value = _address.plain();
-      });
-  };
-
-  const findMyLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        reverseGeocode(position.coords);
-      });
-    }
-  };
-
   // load map script after mounted
   useEffect(() => {
     initMapScript().then(() => initAutocomplete());

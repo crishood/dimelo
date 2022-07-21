@@ -4,7 +4,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux/es/exports";
 import { fetchUsers } from "../slices/usersSlice";
 import { setLoading } from "../slices/uiSlice";
 import { useForm } from "@mantine/form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ArtistFound from "../components/ArtistFound";
 
 const Search = () => {
