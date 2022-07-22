@@ -168,6 +168,7 @@ const Register = () => {
       );
       localStorage.setItem("token", res.data.data.token);
       ls.set("name", res.data.data.artistName);
+      localStorage.setItem("id", res.data.data._id);
       ls.set("email", res.data.data.email);
       ls.set("picture", res.data.data.picture);
       ls.set("role", res.data.data.role);

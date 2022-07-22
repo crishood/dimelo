@@ -1,18 +1,37 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { searchUsers } from "../api";
+import { searchUsers, getFeed, getUsers } from "../api";
 import { setLoading } from "./uiSlice";
 
 const initialState = {
   users: [],
+  entries: [],
 };
 
 export const fetchUsers = createAsyncThunk(
   "data/fetchUsers",
   async ({ role, location }, { dispatch }) => {
-    dispatch(setLoading(true));
     const usersRes = await searchUsers({ role, location });
     dispatch(setUsers(usersRes));
     dispatch(setLoading(false));
+  }
+);
+
+export const fetchFeed = createAsyncThunk(
+  "data/fetchFeed",
+  async (_, { dispatch }) => {
+    const entries = await getFeed();
+
+    dispatch(setFeed(entries));
+    dispatch(setLoading(false));
+  }
+);
+
+export const fetchAllUsers = createAsyncThunk(
+  "data/fetchAllUsers",
+  async (_, { dispatch }) => {
+    const users = await getUsers();
+
+    dispatch(setUsers(users));
   }
 );
 
@@ -23,9 +42,12 @@ export const usersSlice = createSlice({
     setUsers: (state, action) => {
       state.users = action.payload;
     },
+    setFeed: (state, action) => {
+      state.entries = action.payload;
+    },
   },
 });
 
-export const { setUsers } = usersSlice.actions;
+export const { setUsers, setFeed } = usersSlice.actions;
 
 export default usersSlice.reducer;

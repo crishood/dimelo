@@ -23,6 +23,7 @@ import AES from "crypto-js/aes";
 import { useState } from "react";
 import axios from "axios";
 import ProfileEntries from "../components/ProfileEntries";
+import ProfileFollowers from "../components/ProfileFollowers";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
@@ -154,10 +155,7 @@ const Profile = () => {
                   <h2>
                     {artistName} <span>{`(${role})`}</span>
                   </h2>
-                  <div className="profile-followers">
-                    <span>14 seguidores</span>
-                    <span>17 siguiendo</span>
-                  </div>
+                  <ProfileFollowers />
                   <p className="description">{bio}</p>
                   <p>{email}</p>
                   <p>{location}</p>

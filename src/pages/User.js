@@ -1,5 +1,5 @@
 import Shell from "../components/Shell";
-import Entry from "../components/Entry";
+import UserEntires from "../components/UserEntries";
 import { Card, Avatar, ActionIcon, Button, Loader } from "@mantine/core";
 import {
   BrandInstagram,
@@ -7,23 +7,42 @@ import {
   BrandYoutube,
   BrandSoundcloud,
 } from "tabler-icons-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector, shallowEqual } from "react-redux/es/exports";
+import { useSelector, shallowEqual, useDispatch } from "react-redux/es/exports";
+import { fetchFollow } from "../slices/userEntriesSlice";
+import { followUser } from "../api";
 
 const User = () => {
+  const dispatch = useDispatch();
+  const userId = localStorage.getItem("id");
   const loading = useSelector((state) => state.ui.loading);
   const { artistName } = useParams();
   const users = useSelector((state) => state.users.users, shallowEqual);
   const [user, setUser] = useState(
     users.filter((item) => item.artistName === artistName)[0]
   );
+  const [followersCount, setFollowersCount] = useState(user.followers.length);
+  const [followingCount, setFollowingCount] = useState(user.following.length);
   const [follow, setFollow] = useState(false);
+  const following = useSelector(
+    (state) => state.userEntries.following,
+    shallowEqual
+  );
+  useEffect(() => {
+    following.filter((item) => item.artistName === artistName).length === 1
+      ? setFollow(true)
+      : setFollow(false);
+  }, []);
   const handleFollow = () => {
     if (!follow) {
-      user.followers.length++;
+      followUser(userId, user._id, "follow");
+      setFollowersCount(followersCount + 1);
+      dispatch(fetchFollow());
     } else {
-      user.followers.length--;
+      followUser(userId, user._id, "unfollow");
+      setFollowersCount(followersCount - 1);
+      dispatch(fetchFollow());
     }
     setFollow((f) => !f);
   };
@@ -56,14 +75,8 @@ const User = () => {
                   {user.artistName} <span>({user.role})</span>
                 </h2>
                 <div className="profile-followers">
-                  <span>
-                    {user.followers.length === 0 ? "0" : user.followers.length}{" "}
-                    seguidores
-                  </span>
-                  <span>
-                    {user.following.length === 0 ? "0" : user.following.length}{" "}
-                    siguiendo
-                  </span>
+                  <span>{followersCount} seguidores</span>
+                  <span>{followingCount} siguiendo</span>
                 </div>
                 <p className="description">{user.bio}</p>
                 <p>{user.email}</p>
@@ -118,7 +131,14 @@ const User = () => {
             )}
           </Card>
         </div>
-        <Entry />
+        {user.entries.length > 0 && (
+          <UserEntires
+            entries={user.entries}
+            artistName={user.artistName}
+            role={user.role}
+            picture={user.picture}
+          />
+        )}
       </div>
     </Shell>
   );

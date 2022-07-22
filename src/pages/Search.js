@@ -2,6 +2,7 @@ import Shell from "../components/Shell";
 import { Card, Button, NativeSelect, TextInput, Loader } from "@mantine/core";
 import { useDispatch, useSelector, shallowEqual } from "react-redux/es/exports";
 import { fetchUsers } from "../slices/usersSlice";
+import { setUsers } from "../slices/usersSlice";
 import { setLoading } from "../slices/uiSlice";
 import { useForm } from "@mantine/form";
 import { useEffect } from "react";
@@ -20,6 +21,7 @@ const Search = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setLoading(false));
+    dispatch(setUsers([]));
   }, []);
 
   const handleSubmit = async () => {

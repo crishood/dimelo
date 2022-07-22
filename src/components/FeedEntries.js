@@ -1,20 +1,17 @@
 import Entry from "./Entry";
 import { Loader } from "@mantine/core";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { fetchEntries } from "../slices/userEntriesSlice";
+import { fetchFeed, fetchAllUsers } from "../slices/usersSlice";
 import { useEffect } from "react";
-import { setEntries } from "../slices/userEntriesSlice";
 
-const ProfileEntries = () => {
-  const entries = useSelector(
-    (state) => state.userEntries.entries,
-    shallowEqual
-  );
+const FeedEntries = () => {
+  const entries = useSelector((state) => state.users.entries, shallowEqual);
   const loading = useSelector((state) => state.ui.loading);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(setEntries([]));
-    dispatch(fetchEntries());
+    dispatch(fetchFeed());
+    dispatch(fetchAllUsers());
   }, []);
   return (
     <div className="profile-entries-container">
@@ -43,4 +40,4 @@ const ProfileEntries = () => {
   );
 };
 
-export default ProfileEntries;
+export default FeedEntries;

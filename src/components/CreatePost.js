@@ -12,13 +12,13 @@ import ls from "localstorage-slim";
 import encUTF8 from "crypto-js/enc-utf8";
 import AES from "crypto-js/aes";
 import { postNewEntry } from "../slices/userEntriesSlice";
+import { fetchFeed } from "../slices/usersSlice";
 import { useDispatch } from "react-redux";
 
 const CreatePost = () => {
   const dispatch = useDispatch();
   ls.config.encrypt = true;
   ls.config.secret = "secret-string";
-
   ls.config.encrypter = (data, secret) =>
     AES.encrypt(JSON.stringify(data), secret).toString();
 
@@ -44,7 +44,8 @@ const CreatePost = () => {
   const handleSubmit = () => {
     const { description, picture, audio } = form.values;
     form.values.picture = file;
-    dispatch(postNewEntry({ description, picture, audio }));
+    dispatch(postNewEntry(form.values));
+    dispatch(fetchFeed());
     form.reset();
   };
   const readFile = (file) => {

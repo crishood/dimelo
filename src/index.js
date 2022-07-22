@@ -18,7 +18,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
 
-const persistConfig = {
+export const persistConfig = {
   key: "root",
   storage,
 };
@@ -31,7 +31,7 @@ const composedEnhancers = composeAlt(applyMiddleware(logger, thunk));
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(persistedReducer, composedEnhancers);
+export const store = createStore(persistedReducer, composedEnhancers);
 
 let persistor = persistStore(store);
 

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getEntries = () => {
   return axios
-    .get(`${process.env.REACT_APP_URL_BACK}/entries`, {
+    .get(`${process.env.REACT_APP_URL_BACK}/entries/myentries`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -27,7 +27,7 @@ export const postEntry = ({ description, picture, audio }) => {
         },
       }
     )
-    .then((res) => res.data.data)
+    .then((res) => console.log(res.data.data))
     .catch((err) => console.log(err));
 };
 
@@ -48,6 +48,52 @@ export const searchUsers = ({ role, location }) => {
 export const getUser = (artist) => {
   return axios
     .get(`${process.env.REACT_APP_URL_BACK}/users/${artist}`)
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+};
+
+export const followUser = (follower, following, action) => {
+  return axios
+    .put(`${process.env.REACT_APP_URL_BACK}/users/`, {
+      follower: follower,
+      following: following,
+      action: action,
+    })
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+};
+
+export const getFollow = () => {
+  return axios
+    .get(`${process.env.REACT_APP_URL_BACK}/users/myuser`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+};
+
+export const getFeed = () => {
+  return axios
+    .get(`${process.env.REACT_APP_URL_BACK}/entries`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => res.data.data)
+    .catch((err) => console.log(err));
+};
+
+export const getUsers = () => {
+  return axios
+    .get(`${process.env.REACT_APP_URL_BACK}/users`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then((res) => res.data.data)
     .catch((err) => console.log(err));
 };
