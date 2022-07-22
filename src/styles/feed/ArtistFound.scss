@@ -1,0 +1,31 @@
+.artist-container{
+        width: 478px;
+        a{
+            text-decoration: none;
+        }
+}
+
+.artist-info{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    h2{
+        margin: 0;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        color: #901CD7;
+        
+    }
+}
+
+.artist-text{
+    display: flex;
+    flex-direction: column;
+    p{
+        margin: 0;
+        color: grey;
+        font-size: 12px;
+    }
+}

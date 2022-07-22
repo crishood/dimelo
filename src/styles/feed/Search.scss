@@ -7,11 +7,12 @@
     gap: 12px;
 }
 .search-filters{
-    display: flex;
+    display: grid;
     width: 100%;
-    justify-content: space-between;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
-    .mantine-NativeSelect-root{
+    input{
         width: 100%;
     }
+
 }

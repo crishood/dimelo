@@ -11,6 +11,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
     h2{
         margin: 2px;
         font-weight: 700;
@@ -24,6 +25,19 @@
     }
 }
 
+.profile-info-edit{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.profile-edit-picture{
+    img{
+        width: 100%;
+        opacity: 0.5;
+    }
+}
+
 .profile-followers{
     display: flex;
     gap: 12px;
@@ -33,4 +47,18 @@
 
 .description{
     font-style: italic;
+}
+
+.change-picture{
+    font-size: 12px;
+}
+
+.profile-socialmedia{
+    display: flex;
+}
+
+.profile-entries-container{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
