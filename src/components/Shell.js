@@ -13,8 +13,13 @@ import encUTF8 from "crypto-js/enc-utf8";
 import AES from "crypto-js/aes";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux/es/exports";
+import { setEntries } from "../slices/userEntriesSlice";
+import { purgeStoredState } from "redux-persist";
+import { persistConfig } from "../index";
 
 export default function Shell({ children }) {
+  const dispatch = useDispatch();
   const [opened, setOpened] = useState(false);
   const nav = useNavigate();
   ls.config.encrypt = true;
@@ -86,6 +91,8 @@ export default function Shell({ children }) {
                     color="red"
                     onClick={() => {
                       localStorage.clear();
+                      dispatch(setEntries([]));
+                      purgeStoredState(persistConfig);
                       return nav("/");
                     }}
                   >

@@ -58,14 +58,17 @@ const Login = () => {
           password: password,
         }
       );
+
       localStorage.setItem("token", res.data.data.token);
       ls.set("name", res.data.data.artistName);
+      localStorage.setItem("id", res.data.data._id);
       ls.set("email", res.data.data.email);
       ls.set("picture", res.data.data.picture);
       ls.set("role", res.data.data.role);
       ls.set("location", res.data.data.location);
       ls.set("bio", res.data.data.bio);
       ls.set("links", JSON.stringify(res.data.data.links));
+
       const token = await localStorage.getItem("token");
       if (token) {
         nav("/feed");

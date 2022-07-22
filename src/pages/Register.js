@@ -117,27 +117,6 @@ const Register = () => {
     );
   };
 
-  const reverseGeocode = ({ latitude: lat, longitude: lng }) => {
-    const url = `${geocodeJson}?key=${apiKey}&latlng=${lat},${lng}`;
-    searchInput.current.value = "Getting your location...";
-    fetch(url)
-      .then((response) => response.json())
-      .then((location) => {
-        const place = location.results[0];
-        const _address = extractAddress(place);
-        setAddress(_address);
-        searchInput.current.value = _address.plain();
-      });
-  };
-
-  const findMyLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        reverseGeocode(position.coords);
-      });
-    }
-  };
-
   // load map script after mounted
   useEffect(() => {
     initMapScript().then(() => initAutocomplete());
@@ -189,6 +168,7 @@ const Register = () => {
       );
       localStorage.setItem("token", res.data.data.token);
       ls.set("name", res.data.data.artistName);
+      localStorage.setItem("id", res.data.data._id);
       ls.set("email", res.data.data.email);
       ls.set("picture", res.data.data.picture);
       ls.set("role", res.data.data.role);

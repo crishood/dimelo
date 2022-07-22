@@ -16,17 +16,16 @@ import {
   BrandSoundcloud,
   BrandYoutube,
 } from "tabler-icons-react";
-import { Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import ls from "localstorage-slim";
 import encUTF8 from "crypto-js/enc-utf8";
 import AES from "crypto-js/aes";
 import { useState } from "react";
 import axios from "axios";
-import { showNotification } from "@mantine/notifications";
+import ProfileEntries from "../components/ProfileEntries";
+import ProfileFollowers from "../components/ProfileFollowers";
 
 const Profile = () => {
-  const [address, setAddress] = useState({});
   const [edit, setEdit] = useState(false);
 
   ls.config.encrypt = true;
@@ -50,7 +49,8 @@ const Profile = () => {
   const [file, setFile] = useState(null); //capturamos archivo para enviar obj
   const [picture, setPicture] = useState(ls.get("picture"));
   const [bio, setBio] = useState(ls.get("bio"));
-  const [links, setLinks] = useState(ls.get("links"));
+  const [links, setLinks] = useState(JSON.parse(ls.get("links")));
+
   const email = ls.get("email");
   const form = useForm({
     initialValues: {
@@ -59,17 +59,19 @@ const Profile = () => {
       role: role,
       picture: picture,
       links: links,
-      instagram: "",
-      spotify: "",
-      youtube: "",
-      soundcloud: "",
+      instagram: links[0],
+      spotify: links[1],
+      youtube: links[2],
+      soundcloud: links[3],
     },
   });
 
   const handleSubmit = async (e) => {
     const { artistName, role, bio, picture, links } = form.values;
-    form.values.picture = file;
-    form.values.location = `${address.city}, ${address.country}`;
+    if (file) {
+      form.values.picture = file;
+    }
+    console.log(form.values);
     form.values.links = [
       form.values.instagram,
       form.values.spotify,
@@ -79,13 +81,13 @@ const Profile = () => {
     ls.set("artistName", artistName);
     ls.set("bio", bio);
     ls.set("role", role);
-    ls.set("links", form.values.links);
+    ls.set("links", JSON.stringify(form.values.links));
     setArtistName(artistName);
 
     setBio(bio);
     setRole(role);
     setLinks(form.values.links);
-    console.log(form.values);
+
     const response = await axios.put(
       `${process.env.REACT_APP_URL_BACK}/users/myuser`,
       form.values,
@@ -107,6 +109,8 @@ const Profile = () => {
     ls.set("picture", updatePicture.data.data.picture);
     setPicture(ls.get("picture"));
     setEdit((e) => !e);
+    setFile(null);
+    setImage(null);
   };
 
   const readFile = (file) => {
@@ -151,15 +155,12 @@ const Profile = () => {
                   <h2>
                     {artistName} <span>{`(${role})`}</span>
                   </h2>
-                  <div className="profile-followers">
-                    <span>14 seguidores</span>
-                    <span>17 siguiendo</span>
-                  </div>
+                  <ProfileFollowers />
                   <p className="description">{bio}</p>
                   <p>{email}</p>
                   <p>{location}</p>
                   <div className="profile-socialmedia">
-                    {links[0] && (
+                    {links[0].length > 1 && (
                       <ActionIcon
                         variant="transparent"
                         color="blue"
@@ -170,7 +171,7 @@ const Profile = () => {
                         <BrandInstagram size={24} />
                       </ActionIcon>
                     )}
-                    {links[1] && (
+                    {links[1].length > 1 && (
                       <ActionIcon
                         variant="transparent"
                         color="blue"
@@ -181,7 +182,7 @@ const Profile = () => {
                         <BrandSpotify size={24} />
                       </ActionIcon>
                     )}
-                    {links[2] && (
+                    {links[2].length > 1 && (
                       <ActionIcon
                         variant="transparent"
                         color="blue"
@@ -192,7 +193,7 @@ const Profile = () => {
                         <BrandYoutube size={24} />
                       </ActionIcon>
                     )}
-                    {links[3] && (
+                    {links[3].length > 1 && (
                       <ActionIcon
                         variant="transparent"
                         color="blue"
@@ -208,6 +209,7 @@ const Profile = () => {
               </Card>
             </div>
             <CreatePost />
+            <ProfileEntries />
           </>
         ) : (
           <div className="profile-container">

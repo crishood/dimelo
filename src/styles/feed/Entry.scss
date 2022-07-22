@@ -7,6 +7,9 @@
     gap: 12px;
     align-items: center;
     margin-bottom: 12px;
+    a{
+        text-decoration: none;
+    }
     h2{
         margin: 2px;
         font-weight: 700;
@@ -14,12 +17,24 @@
         line-height: 22px;
         color: #901CD7;
     }
+    :last-child{
+        margin-left: auto;
+    }
 }
 
 .entry-body{
     display: flex;
+    flex-direction: column;
+    
 }
 
+.media{
+    
+    width: 100%;
+    img{
+        width: 100%;
+    }
+}
 .entry-text-sound{
     width: 100%;
     padding: 12px;
@@ -27,5 +42,12 @@
     p{
         font-style: italic;
         font-size: 16px;
+       
     }
+}
+
+.date{
+    margin: 0;
+    font-size: 10px;
+    color: grey;
 }
