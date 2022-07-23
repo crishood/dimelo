@@ -1,7 +1,9 @@
+@import "../mixins/responsive.scss";
 .profile-container{
     width: 478px;
+    @include small-devices;
+    
 }
-
 .profile-edit{
     display: flex;
     justify-content: right;
@@ -61,4 +63,5 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    @include small-devices;
 }

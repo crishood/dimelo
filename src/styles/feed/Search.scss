@@ -1,5 +1,7 @@
+@import "../mixins/responsive.scss";
 .search-container{
     width: 478px;
+    @include small-devices;
 }
 .search-form{
     display: flex;
