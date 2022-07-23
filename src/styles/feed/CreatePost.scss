@@ -1,5 +1,8 @@
+@import "../mixins/responsive.scss";
+
 .create-post-container{
     width: 478px;
+    @include small-devices;
 }
 
 .create-post-form{

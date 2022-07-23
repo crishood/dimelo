@@ -42,6 +42,11 @@ export default function Shell({ children }) {
     <AppShell
       navbarOffsetBreakpoint="sm"
       fixed
+      styles={{
+        main: {
+          background: "#CDD9DB",
+        },
+      }}
       navbar={
         <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
           <Navbar

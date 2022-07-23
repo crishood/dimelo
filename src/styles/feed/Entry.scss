@@ -1,5 +1,7 @@
+@import "../mixins/responsive.scss";
 .entry-container{
     width: 478px;
+    @include small-devices;
 }
 
 .entry-header{
